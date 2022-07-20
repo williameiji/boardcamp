@@ -25,3 +25,11 @@ export function addCustomer(req, res) {
 		res.sendStatus(500);
 	}
 }
+
+export function editCustomer(req, res) {
+	try {
+		res.sendStatus(200);
+	} catch (error) {
+		res.sendStatus(500);
+	}
+}
