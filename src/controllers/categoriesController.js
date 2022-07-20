@@ -8,7 +8,7 @@ export function sendCategories(req, res, next) {
 	}
 }
 
-export function addCategorie(req, res, next) {
+export function addCategory(req, res, next) {
 	try {
 		res.sendStatus(201);
 	} catch (error) {

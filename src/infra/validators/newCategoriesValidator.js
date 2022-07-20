@@ -1,10 +1,10 @@
-import schemaNewCategorie from "../schemas/schemaNewCategorie.js";
+import schemaNewCategory from "../schemas/schemaNewCategory.js";
 
 function newCategoriesValidator(req, res, next) {
 	try {
 		const data = req.body;
 
-		const { error } = schemaNewCategorie.validate(data);
+		const { error } = schemaNewCategory.validate(data);
 
 		if (error) return res.sendStatus(400);
 

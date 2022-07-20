@@ -2,11 +2,11 @@ import { Router } from "express";
 
 import {
 	sendCategories,
-	addCategorie,
+	addCategory,
 } from "../controllers/categoriesController.js";
 import searchCategories from "../infra/middlewares/searchCategories.js";
 import newCategoriesValidator from "../infra/validators/newCategoriesValidator.js";
-import newCategorie from "../infra/middlewares/newCategorie.js";
+import newCategory from "../infra/middlewares/newCategory.js";
 
 const categoriesRouter = Router();
 
@@ -14,8 +14,8 @@ categoriesRouter.get("/categories", searchCategories, sendCategories);
 categoriesRouter.post(
 	"/categories",
 	newCategoriesValidator,
-	newCategorie,
-	addCategorie
+	newCategory,
+	addCategory
 );
 
 export default categoriesRouter;

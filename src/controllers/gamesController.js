@@ -7,3 +7,11 @@ export function sendGames(req, res, next) {
 		res.sendStatus(500);
 	}
 }
+
+export function addGames(req, res, next) {
+	try {
+		res.sendStatus(201);
+	} catch (error) {
+		res.sendStatus(500);
+	}
+}
