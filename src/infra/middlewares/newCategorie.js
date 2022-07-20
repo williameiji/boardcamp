@@ -2,7 +2,7 @@ import connection from "../../databases/postgres.js";
 
 async function newCategorie(req, res, next) {
 	const data = res.locals.data;
-	console.log(data.name);
+
 	try {
 		const isCategorieRegistered = await connection.query(
 			"SELECT * FROM categories WHERE name = $1",
