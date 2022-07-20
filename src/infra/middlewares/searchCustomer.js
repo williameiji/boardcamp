@@ -6,7 +6,7 @@ async function searchCustomer(req, res, next) {
 	if (!cpf) {
 		try {
 			const { rows: customer } = await connection.query(
-				"SELECT * FROM costumers"
+				"SELECT * FROM customers"
 			);
 
 			res.locals.customer = customer;
@@ -16,7 +16,7 @@ async function searchCustomer(req, res, next) {
 			res.sendStatus(500);
 		}
 	} else {
-		//search with query
+		//get with query
 	}
 }
 

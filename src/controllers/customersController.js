@@ -1,8 +1,8 @@
-export function sendCostumers(res, res) {
+export function sendCostumers(req, res) {
 	try {
 		const customer = res.locals.customer;
 
-		res.sendStatus(customer);
+		res.status(200).send(customer);
 	} catch (error) {
 		res.sendStatus(500);
 	}
