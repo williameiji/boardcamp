@@ -5,11 +5,11 @@ async function searchCustomer(req, res, next) {
 
 	if (!cpf) {
 		try {
-			const { rows: customer } = await connection.query(
+			const { rows: customers } = await connection.query(
 				"SELECT * FROM customers"
 			);
 
-			res.locals.customer = customer;
+			res.locals.customers = customers;
 
 			next();
 		} catch (error) {
