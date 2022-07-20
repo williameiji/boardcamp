@@ -15,7 +15,7 @@ async function newGameValidator(req, res, next) {
 			[data.categoryId]
 		);
 
-		if (!isCategoryId.length) return res.sendStatus(400);
+		if (!isCategoryId.length) return res.sendStatus(409);
 
 		res.locals.data = data;
 
