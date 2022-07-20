@@ -8,6 +8,8 @@ async function searchCustomerById(req, res, next) {
 			[id]
 		);
 
+		if (!customer.length) return res.sendStatus(404);
+
 		res.locals.customer = customer;
 
 		next();
