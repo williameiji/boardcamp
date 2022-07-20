@@ -1,4 +1,4 @@
-export function sendGames(req, res, next) {
+export function sendGames(req, res) {
 	try {
 		const games = res.locals.games;
 
@@ -8,7 +8,7 @@ export function sendGames(req, res, next) {
 	}
 }
 
-export function addGames(req, res, next) {
+export function addGames(req, res) {
 	try {
 		res.sendStatus(201);
 	} catch (error) {

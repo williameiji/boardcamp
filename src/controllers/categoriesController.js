@@ -1,4 +1,4 @@
-export function sendCategories(req, res, next) {
+export function sendCategories(req, res) {
 	try {
 		const data = res.locals.data;
 
@@ -8,7 +8,7 @@ export function sendCategories(req, res, next) {
 	}
 }
 
-export function addCategory(req, res, next) {
+export function addCategory(req, res) {
 	try {
 		res.sendStatus(201);
 	} catch (error) {
