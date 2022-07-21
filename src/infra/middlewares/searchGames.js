@@ -2,10 +2,12 @@ import connection from "../../databases/postgres.js";
 
 async function searchGames(req, res, next) {
 	const name = req.query.name;
-	console.log(name);
+
 	if (!name) {
 		try {
-			const { rows: games } = await connection.query("SELECT * FROM games");
+			const { rows: games } = await connection.query(
+				`SELECT games.id, games.name, games.image, games."stockTotal", games."categoryId", games."pricePerDay", categories.name AS categoryName FROM games INNER JOIN categories ON games."categoryId" = categories.id`
+			);
 
 			res.locals.games = games;
 
