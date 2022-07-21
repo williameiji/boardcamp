@@ -2,7 +2,7 @@ import connection from "../../databases/postgres.js";
 
 async function searchGames(req, res, next) {
 	const name = req.query.name;
-
+	console.log(name);
 	if (!name) {
 		try {
 			const { rows: games } = await connection.query("SELECT * FROM games");
@@ -14,7 +14,18 @@ async function searchGames(req, res, next) {
 			res.sendStatus(500);
 		}
 	} else {
-		//search with query
+		try {
+			const { rows: games } = await connection.query(
+				"SELECT * FROM games WHERE LOWER(name) LIKE '%' || $1 || '%'",
+				[name]
+			);
+
+			res.locals.games = games;
+
+			next();
+		} catch (error) {
+			res.sendStatus(500);
+		}
 	}
 }
 

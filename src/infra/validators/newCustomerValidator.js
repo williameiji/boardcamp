@@ -4,7 +4,7 @@ import schemaNewCustomer from "../schemas/schemaNewCustomer.js";
 
 async function newCustomerValidator(req, res, next) {
 	const data = req.body;
-
+	console.log(data);
 	const { error } = schemaNewCustomer.validate(data);
 
 	if (error) return res.sendStatus(400);

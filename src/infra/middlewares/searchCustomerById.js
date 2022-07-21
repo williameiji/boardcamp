@@ -2,6 +2,7 @@ import connection from "../../databases/postgres.js";
 
 async function searchCustomerById(req, res, next) {
 	const { id } = req.params;
+	console.log(id);
 	try {
 		const { rows: customer } = await connection.query(
 			"SELECT * FROM customers WHERE id = $1",
