@@ -16,7 +16,14 @@ async function searchCustomer(req, res, next) {
 			res.sendStatus(500);
 		}
 	} else {
-		//get with query
+		const { rows: customers } = await connection.query(
+			"SELECT * FROM customers WHERE cpf LIKE '%' || $1 || '%'",
+			[cpf]
+		);
+
+		res.locals.customers = customers;
+
+		next();
 	}
 }
 
