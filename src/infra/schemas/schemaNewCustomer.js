@@ -10,10 +10,7 @@ const schemaNewCustomer = joi.object({
 		.string()
 		.pattern(/^[0-9]{11}$/)
 		.required(),
-	birthday: joi
-		.string()
-		.pattern(/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/)
-		.required(),
+	birthday: joi.string().isoDate().required(),
 });
 
 export default schemaNewCustomer;
