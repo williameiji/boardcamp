@@ -8,7 +8,7 @@ async function searchRentals(req, res, next) {
 
 	try {
 		if (customerId) {
-			await connection.query(
+			const { rows: data } = await connection.query(
 				`SELECT rentals.*,
                 (SELECT row_to_json(_) FROM (SELECT customers.id, customers.name) AS _) AS customer,
                 (SELECT row_to_json(_) FROM (SELECT games.id, games.name, games."categoryId", (SELECT categories.name AS "categoryName" FROM categories WHERE games."categoryId"=categories.id)) AS _) AS game
@@ -18,10 +18,13 @@ async function searchRentals(req, res, next) {
                 WHERE rentals."customerId" = $1 LIMIT $2 OFFSET $3`,
 				[customerId, limit, offset]
 			);
+
+			res.locals.data = data;
+
 			next();
 		}
 		if (gameId) {
-			await connection.query(
+			const { rows: data } = await connection.query(
 				`SELECT rentals.*,
                 (SELECT row_to_json(_) FROM (SELECT customers.id, customers.name) AS _) AS customer,
                 (SELECT row_to_json(_) FROM (SELECT games.id, games.name, games."categoryId", (SELECT categories.name AS "categoryName" FROM categories WHERE games."categoryId"=categories.id)) AS _) AS game
@@ -31,9 +34,12 @@ async function searchRentals(req, res, next) {
                 WHERE rentals."gameId" = $1 LIMIT $2 OFFSET $3`,
 				[gameId, limit, offset]
 			);
+
+			res.locals.data = data;
+
 			next();
 		}
-		await connection.query(
+		const { rows: data } = await connection.query(
 			`SELECT rentals.*,
             (SELECT row_to_json(_) FROM (SELECT customers.id, customers.name) AS _) AS customer,
             (SELECT row_to_json(_) FROM (SELECT games.id, games.name, games."categoryId", (SELECT categories.name AS "categoryName" FROM categories WHERE games."categoryId"=categories.id)) AS _) AS game
@@ -43,6 +49,8 @@ async function searchRentals(req, res, next) {
 			LIMIT $1 OFFSET $2`,
 			[limit, offset]
 		);
+
+		res.locals.data = data;
 
 		next();
 	} catch (error) {

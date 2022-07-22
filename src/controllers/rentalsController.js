@@ -8,7 +8,9 @@ export function addRental(req, res) {
 
 export function sendRentals(req, res) {
 	try {
-		res.sendStatus(200);
+		const data = res.locals.data;
+
+		res.status(200).send(data);
 	} catch (error) {
 		res.sendStatus(500);
 	}
