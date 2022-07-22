@@ -21,3 +21,11 @@ export function closeRental(req, res) {
 		res.sendStatus(500);
 	}
 }
+
+export function deleteRental(req, res) {
+	try {
+		res.sendStatus(200);
+	} catch (error) {
+		res.sendStatus(500);
+	}
+}
