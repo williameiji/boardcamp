@@ -12,8 +12,6 @@ async function newRental(req, res, next) {
 
 		const totalPrice = price[0].pricePerDay * data.daysRented;
 
-		console.log(totalPrice);
-
 		await connection.query(
 			`INSERT INTO rentals ("customerId", "gameId", "rentDate", "daysRented", "returnDate", "originalPrice", "delayFee") VALUES ($1, $2, $3, $4, $5, $6, $7)`,
 			[
@@ -27,7 +25,7 @@ async function newRental(req, res, next) {
 			]
 		);
 
-		res.sendStatus(200);
+		next();
 	} catch (error) {
 		res.sendStatus(500);
 	}
