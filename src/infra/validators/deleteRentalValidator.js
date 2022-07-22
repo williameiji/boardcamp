@@ -8,7 +8,7 @@ async function deleteRentalValidator(req, res, next) {
 			`SELECT * FROM rentals WHERE rentals.id = $1`,
 			[id]
 		);
-		console.log(isRentalRegistred);
+
 		if (!isRentalRegistred.length) return res.sendStatus(404);
 
 		if (isRentalRegistred[0].returnDate === null) return res.sendStatus(400);
