@@ -11,13 +11,8 @@ async function newGame(req, res, next) {
 
 		if (isGameRegistered.rows.length) return res.sendStatus(409);
 
-		const { rows: category } = await connection.query(
-			"SELECT name FROM categories WHERE id = $1",
-			[data.categoryId]
-		);
-
 		await connection.query(
-			`INSERT INTO games ("name","image","stockTotal","categoryId","pricePerDay") VALUES ($1, $2, $3, $4, $5)`,
+			`INSERT INTO games ("name","image","stockTotal","categoryId","pricePerDay", ) VALUES ($1, $2, $3, $4, $5)`,
 			[
 				data.name,
 				data.image,
@@ -26,8 +21,6 @@ async function newGame(req, res, next) {
 				data.pricePerDay,
 			]
 		);
-
-		//need to add category name
 
 		next();
 	} catch (error) {
