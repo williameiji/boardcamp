@@ -4,15 +4,8 @@ async function newGame(req, res, next) {
 	const data = res.locals.data;
 
 	try {
-		const isGameRegistered = await connection.query(
-			"SELECT * FROM games WHERE name = $1",
-			[data.name]
-		);
-
-		if (isGameRegistered.rows.length) return res.sendStatus(409);
-
 		await connection.query(
-			`INSERT INTO games ("name","image","stockTotal","categoryId","pricePerDay", ) VALUES ($1, $2, $3, $4, $5)`,
+			`INSERT INTO games (name, image, "stockTotal", "categoryId", "pricePerDay") VALUES ($1, $2, $3, $4, $5)`,
 			[
 				data.name,
 				data.image,
