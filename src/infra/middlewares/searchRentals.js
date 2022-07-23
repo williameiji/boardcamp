@@ -13,9 +13,12 @@ async function searchRentals(req, res, next) {
                 (SELECT row_to_json(_) FROM (SELECT customers.id, customers.name) AS _) AS customer,
                 (SELECT row_to_json(_) FROM (SELECT games.id, games.name, games."categoryId", (SELECT categories.name AS "categoryName" FROM categories WHERE games."categoryId"=categories.id)) AS _) AS game
                 FROM rentals 
-                join customers ON rentals."customerId" = customers.id
-                join games ON rentals."gameId" = games.id
-                WHERE rentals."customerId" = $1 LIMIT $2 OFFSET $3`,
+                JOIN customers 
+				ON rentals."customerId" = customers.id
+                JOIN games 
+				ON rentals."gameId" = games.id
+                WHERE rentals."customerId" = $1 
+				LIMIT $2 OFFSET $3`,
 				[customerId, limit, offset]
 			);
 
@@ -29,9 +32,12 @@ async function searchRentals(req, res, next) {
                 (SELECT row_to_json(_) FROM (SELECT customers.id, customers.name) AS _) AS customer,
                 (SELECT row_to_json(_) FROM (SELECT games.id, games.name, games."categoryId", (SELECT categories.name AS "categoryName" FROM categories WHERE games."categoryId"=categories.id)) AS _) AS game
                 FROM rentals 
-                join customers ON rentals."customerId" = customers.id
-                join games ON rentals."gameId" = games.id
-                WHERE rentals."gameId" = $1 LIMIT $2 OFFSET $3`,
+                JOIN customers 
+				ON rentals."customerId" = customers.id
+                JOIN games 
+				ON rentals."gameId" = games.id
+                WHERE rentals."gameId" = $1 
+				LIMIT $2 OFFSET $3`,
 				[gameId, limit, offset]
 			);
 
@@ -44,9 +50,12 @@ async function searchRentals(req, res, next) {
             (SELECT row_to_json(_) FROM (SELECT customers.id, customers.name) AS _) AS customer,
             (SELECT row_to_json(_) FROM (SELECT games.id, games.name, games."categoryId", (SELECT categories.name AS "categoryName" FROM categories WHERE games."categoryId"=categories.id)) AS _) AS game
             FROM rentals
-            join customers ON rentals."customerId" = customers.id
-            join games ON rentals."gameId" = games.id 
-			LIMIT $1 OFFSET $2`,
+            JOIN customers 
+			ON rentals."customerId" = customers.id
+            JOIN games 
+			ON rentals."gameId" = games.id 
+			LIMIT $1 OFFSET $2
+			`,
 			[limit, offset]
 		);
 

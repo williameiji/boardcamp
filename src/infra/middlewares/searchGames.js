@@ -4,13 +4,6 @@ async function searchGames(req, res, next) {
 	const name = req.query.name;
 	const offset = req.query.offset;
 	const limit = req.query.limit;
-	const order = req.query.order;
-	const desc = req.query.desc;
-	let direction = "ASC";
-
-	if (desc) {
-		direction = "DESC";
-	}
 
 	if (!name) {
 		try {
@@ -19,7 +12,6 @@ async function searchGames(req, res, next) {
 				FROM games 
 				INNER JOIN categories 
 				ON games."categoryId" = categories.id
-				ORDER BY ${order} ${direction}
 				LIMIT $1 OFFSET $2 
 				`,
 				[limit, offset]
@@ -38,7 +30,6 @@ async function searchGames(req, res, next) {
 				FROM games 
 				WHERE LOWER(name) 
 				LIKE '%' || $1 || '%' 
-				ORDER BY ${order} ${direction}
 				LIMIT $2 OFFSET $3 `,
 				[name, limit, offset]
 			);
