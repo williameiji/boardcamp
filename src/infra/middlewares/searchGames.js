@@ -4,11 +4,24 @@ async function searchGames(req, res, next) {
 	const name = req.query.name;
 	const offset = req.query.offset;
 	const limit = req.query.limit;
+	const order = req.query.order;
+	const desc = req.query.desc;
+	let direction = "ASC";
+
+	if (desc) {
+		direction = "DESC";
+	}
 
 	if (!name) {
 		try {
 			const { rows: games } = await connection.query(
-				`SELECT games.id, games.name, games.image, games."stockTotal", games."categoryId", games."pricePerDay", categories.name AS categoryName FROM games INNER JOIN categories ON games."categoryId" = categories.id LIMIT $1 OFFSET $2`,
+				`SELECT games.*, categories.name AS "categoryName" 
+				FROM games 
+				INNER JOIN categories 
+				ON games."categoryId" = categories.id
+				ORDER BY ${order} ${direction}
+				LIMIT $1 OFFSET $2 
+				`,
 				[limit, offset]
 			);
 
@@ -21,8 +34,13 @@ async function searchGames(req, res, next) {
 	} else {
 		try {
 			const { rows: games } = await connection.query(
-				"SELECT * FROM games WHERE LOWER(name) LIKE '%' || $1 || '%' LIMIT $2 OFFSET $3 ORDER BY $4 $5",
-				[name, limit, offset, order, direction]
+				`SELECT * 
+				FROM games 
+				WHERE LOWER(name) 
+				LIKE '%' || $1 || '%' 
+				ORDER BY ${order} ${direction}
+				LIMIT $2 OFFSET $3 `,
+				[name, limit, offset]
 			);
 
 			res.locals.games = games;
