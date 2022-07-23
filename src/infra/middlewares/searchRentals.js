@@ -6,6 +6,31 @@ async function searchRentals(req, res, next) {
 	const offset = req.query.offset;
 	const limit = req.query.limit;
 
+	//avoid sql injection on ORDER BY
+	const columns = [
+		"id",
+		"customerId",
+		"gameId",
+		"rentDate",
+		"daysRented",
+		"returnDate",
+		"originalPrice",
+		"delayFee",
+	];
+	let order;
+	let direction = "ASC";
+
+	if (columns.some((item) => item === req.query.order)) {
+		order = `"${req.query.order}"`;
+	} else {
+		order = "id";
+	}
+
+	if (req.query.desc) {
+		direction = "DESC";
+	}
+	//avoid sql injection on ORDER BY
+
 	try {
 		if (customerId) {
 			const { rows: data } = await connection.query(
@@ -18,6 +43,7 @@ async function searchRentals(req, res, next) {
                 JOIN games 
 				ON rentals."gameId" = games.id
                 WHERE rentals."customerId" = $1 
+				ORDER BY ${order} ${direction}
 				LIMIT $2 OFFSET $3`,
 				[customerId, limit, offset]
 			);
@@ -37,6 +63,7 @@ async function searchRentals(req, res, next) {
                 JOIN games 
 				ON rentals."gameId" = games.id
                 WHERE rentals."gameId" = $1 
+				ORDER BY ${order} ${direction}
 				LIMIT $2 OFFSET $3`,
 				[gameId, limit, offset]
 			);
@@ -54,6 +81,7 @@ async function searchRentals(req, res, next) {
 			ON rentals."customerId" = customers.id
             JOIN games 
 			ON rentals."gameId" = games.id 
+			ORDER BY ${order} ${direction}
 			LIMIT $1 OFFSET $2
 			`,
 			[limit, offset]
