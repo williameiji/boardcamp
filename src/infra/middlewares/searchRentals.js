@@ -108,7 +108,8 @@ async function searchRentals(req, res, next) {
 			const { rows: data } = await connection.query(
 				`SELECT rentals.*,
                 (SELECT row_to_json(_) FROM (SELECT customers.id, customers.name) AS _) AS customer,
-                (SELECT row_to_json(_) FROM (SELECT games.id, games.name, games."categoryId", (SELECT categories.name AS "categoryName" FROM categories WHERE games."categoryId"=categories.id)) AS _) AS game
+                (SELECT row_to_json(_) FROM (SELECT games.id, games.name, games."categoryId", 
+				(SELECT categories.name AS "categoryName" FROM categories WHERE games."categoryId"=categories.id)) AS _) AS game
                 FROM rentals 
                 JOIN customers 
 				ON rentals."customerId" = customers.id

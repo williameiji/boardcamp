@@ -31,3 +31,11 @@ export function deleteRental(req, res) {
 		res.sendStatus(500);
 	}
 }
+
+export function sendMetrics(req, res) {
+	try {
+		const metrics = res.locals.metrics;
+
+		res.status(200).send(metrics);
+	} catch (error) {}
+}
