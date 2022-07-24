@@ -5,11 +5,16 @@ async function metricsRentals(req, res, next) {
 	const endDate = req.query.endDate;
 	let queryWhere = null;
 
-	if (startDate && endDate) {
+	function validateDate(element) {
+		let regex = /^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$/;
+		return regex.test(element);
+	}
+
+	if (validateDate(startDate) && validateDate(endDate)) {
 		queryWhere = `BETWEEN '${startDate}' AND '${endDate}'`;
-	} else if (startDate) {
+	} else if (validateDate(startDate)) {
 		queryWhere = `>= '${startDate}'`;
-	} else if (endDate) {
+	} else if (validateDate(endDate)) {
 		queryWhere = `<= '${startDate}'`;
 	}
 
@@ -25,6 +30,7 @@ async function metricsRentals(req, res, next) {
 
 			next();
 		}
+
 		const { rows: metrics } = await connection.query(`
             SELECT SUM(COALESCE("originalPrice", 0) + COALESCE("delayFee", 0)) as revenue, COUNT(id) as rentals, ROUND(AVG("originalPrice")) as average
             FROM rentals
