@@ -5,6 +5,8 @@ async function searchRentals(req, res, next) {
 	const gameId = req.query.gameId;
 	const offset = req.query.offset;
 	const limit = req.query.limit;
+	const status = req.query.status;
+	const startDate = req.query.startDate;
 
 	//avoid sql injection on ORDER BY
 	const columns = [
@@ -52,6 +54,7 @@ async function searchRentals(req, res, next) {
 
 			next();
 		}
+
 		if (gameId) {
 			const { rows: data } = await connection.query(
 				`SELECT rentals.*,
@@ -72,6 +75,56 @@ async function searchRentals(req, res, next) {
 
 			next();
 		}
+
+		if (status) {
+			let searchStatus;
+			if (status === "open") {
+				searchStatus = ` IS NULL `;
+			} else {
+				searchStatus = ` IS NOT NULL `;
+			}
+
+			const { rows: data } = await connection.query(
+				`SELECT rentals.*,
+                (SELECT row_to_json(_) FROM (SELECT customers.id, customers.name) AS _) AS customer,
+                (SELECT row_to_json(_) FROM (SELECT games.id, games.name, games."categoryId", (SELECT categories.name AS "categoryName" FROM categories WHERE games."categoryId"=categories.id)) AS _) AS game
+                FROM rentals 
+                JOIN customers 
+				ON rentals."customerId" = customers.id
+                JOIN games 
+				ON rentals."gameId" = games.id
+                WHERE rentals."returnDate" ${searchStatus}
+				ORDER BY ${order} ${direction}
+				LIMIT $1 OFFSET $2`,
+				[limit, offset]
+			);
+
+			res.locals.data = data;
+
+			next();
+		}
+
+		if (startDate) {
+			const { rows: data } = await connection.query(
+				`SELECT rentals.*,
+                (SELECT row_to_json(_) FROM (SELECT customers.id, customers.name) AS _) AS customer,
+                (SELECT row_to_json(_) FROM (SELECT games.id, games.name, games."categoryId", (SELECT categories.name AS "categoryName" FROM categories WHERE games."categoryId"=categories.id)) AS _) AS game
+                FROM rentals 
+                JOIN customers 
+				ON rentals."customerId" = customers.id
+                JOIN games 
+				ON rentals."gameId" = games.id
+                WHERE rentals."rentDate" >= '${startDate}'
+				ORDER BY ${order} ${direction}
+				LIMIT $1 OFFSET $2`,
+				[limit, offset]
+			);
+
+			res.locals.data = data;
+
+			next();
+		}
+
 		const { rows: data } = await connection.query(
 			`SELECT rentals.*,
             (SELECT row_to_json(_) FROM (SELECT customers.id, customers.name) AS _) AS customer,
