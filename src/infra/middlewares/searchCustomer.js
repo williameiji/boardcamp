@@ -24,7 +24,7 @@ async function searchCustomer(req, res, next) {
 	if (!cpf) {
 		try {
 			const { rows: customers } = await connection.query(
-				`SELECT * 
+				`SELECT *, (SELECT COUNT(rentals."customerId") FROM rentals WHERE customers.id = rentals."customerId") as "rentalsCount"
 				FROM customers 
 				ORDER BY ${order} ${direction}
 				LIMIT $1 OFFSET $2`,
@@ -39,7 +39,7 @@ async function searchCustomer(req, res, next) {
 		}
 	} else {
 		const { rows: customers } = await connection.query(
-			`SELECT * 
+			`SELECT *, (SELECT COUNT(rentals."customerId") FROM rentals WHERE customers.id = rentals."customerId") as "rentalsCount"
 			FROM  customers 
 			WHERE cpf 
 			LIKE '%' || $1 || '%' 

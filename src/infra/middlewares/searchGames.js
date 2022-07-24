@@ -31,7 +31,7 @@ async function searchGames(req, res, next) {
 	if (!name) {
 		try {
 			const { rows: games } = await connection.query(
-				`SELECT games.*, categories.name AS "categoryName" 
+				`SELECT games.*, categories.name AS "categoryName", (SELECT COUNT(rentals."gameId") FROM rentals WHERE games.id = rentals."gameId") as "rentalsCount"
 				FROM games 
 				INNER JOIN categories 
 				ON games."categoryId" = categories.id
@@ -50,7 +50,7 @@ async function searchGames(req, res, next) {
 	} else {
 		try {
 			const { rows: games } = await connection.query(
-				`SELECT * 
+				`SELECT *, (SELECT COUNT(rentals."gameId") FROM rentals WHERE games.id = rentals."gameId") as "rentalsCount"
 				FROM games 
 				WHERE LOWER(name) 
 				LIKE '%' || $1 || '%' 
