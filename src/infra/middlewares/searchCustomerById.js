@@ -5,13 +5,13 @@ async function searchCustomerById(req, res, next) {
 
 	try {
 		const { rows: customer } = await connection.query(
-			"SELECT * FROM customers WHERE id = $1",
+			"SELECT * FROM customers WHERE customers.id = $1",
 			[id]
 		);
 
 		if (!customer.length) return res.sendStatus(404);
 
-		res.locals.customer = customer;
+		res.locals.customer = customer[0];
 
 		next();
 	} catch (error) {
