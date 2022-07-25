@@ -18,8 +18,8 @@ async function newGameValidator(req, res, next) {
 		if (!isCategoryRegistred.length) return res.sendStatus(400);
 
 		const { rows: isGameRegistred } = await connection.query(
-			"SELECT * FROM games WHERE games.name = $1",
-			[data.name]
+			"SELECT * FROM games WHERE LOWER(games.name) = $1",
+			[data.name.toLowerCase()]
 		);
 
 		if (isGameRegistred.length) return res.sendStatus(409);
