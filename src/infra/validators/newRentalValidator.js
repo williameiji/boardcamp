@@ -15,17 +15,14 @@ async function newRentalValidator(req, res, next) {
 		);
 
 		const { rows: isGameAvailable } = await connection.query(
-			`SELECT * FROM games WHERE games."stockTotal" < (SELECT COUNT(rentals."gameId") FROM rentals WHERE rentals."gameId" = $1)`,
-			[data.gameId]
+			`SELECT COUNT(rentals."gameId") FROM rentals WHERE rentals."gameId" = ${data.gameId} AND rentals."returnDate" IS NULL`
 		);
 
-		if (
-			!isCustomerRegistred.length ||
-			!isGameRegistred.length ||
-			!isGameAvailable ||
-			data.daysRented < 1
-		)
+		if (!isGameRegistred.length) return res.sendStatus(400);
+		if (!isCustomerRegistred.length) return res.sendStatus(400);
+		if (parseInt(isGameAvailable[0].count) === isGameRegistred[0].stockTotal)
 			return res.sendStatus(400);
+		if (data.daysRented < 1) return res.sendStatus(400);
 
 		next();
 	} catch (error) {
