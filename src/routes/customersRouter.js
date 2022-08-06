@@ -6,28 +6,12 @@ import {
 	addCustomer,
 	editCustomer,
 } from "../controllers/customersController.js";
-import searchCustomer from "../infra/middlewares/searchCustomer.js";
-import searchCustomerById from "../infra/middlewares/searchCustomerById.js";
-import newCustomerValidator from "../infra/validators/newCustomerValidator.js";
-import newCustomer from "../infra/middlewares/newCustomer.js";
-import editCustomerValidator from "../infra/validators/editCustomerValidator.js";
-import editCustomerInformation from "../infra/middlewares/editCustomerInformation.js";
 
 const customerRouter = Router();
 
-customerRouter.get("/customers", searchCustomer, sendCostumers);
-customerRouter.get("/customers/:id", searchCustomerById, sendCostumer);
-customerRouter.post(
-	"/customers",
-	newCustomerValidator,
-	newCustomer,
-	addCustomer
-);
-customerRouter.put(
-	"/customers/:id",
-	editCustomerValidator,
-	editCustomerInformation,
-	editCustomer
-);
+customerRouter.get("/customers", sendCostumers);
+customerRouter.get("/customers/:id", sendCostumer);
+customerRouter.post("/customers", addCustomer);
+customerRouter.put("/customers/:id", editCustomer);
 
 export default customerRouter;
