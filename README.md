@@ -1,11 +1,151 @@
-# BOARDCAMP BACKEND
+# <p align = "center"> BoardCamp Backend </p>
 
 
-## Built With
+##  :clipboard: Description
 
-<img align="left" alt="nodejs" width="50px" src="https://user-images.githubusercontent.com/86417618/176681309-68f060af-d966-44b1-9fa6-486ed2248bad.svg" />
-<img align="left" alt="expressjs" width="50px" src="https://user-images.githubusercontent.com/86417618/176681476-9f13d771-9818-463b-8797-8fc66ddfe9c8.svg" />
-<img align="left" alt="nodemon" width="50px" src="https://user-images.githubusercontent.com/86417618/176682681-ab9eea39-7652-451a-8808-e05715c3fdc8.svg" />
-<img align="left" alt="postgresql" width="50px" src="https://user-images.githubusercontent.com/86417618/185920387-2119a66a-126a-48c4-a65f-7472e426a733.svg" />
-<img align="left" alt="jwt" width="50px" src="https://user-images.githubusercontent.com/86417618/179514509-3c127ae8-9ade-4829-9b33-5fa1dfeb674e.svg" />
+A board game rental management system.
+
+***
+
+## :computer:	 Technologies and Concepts
+
+- REST APIs
+- Node.js
+- JavaScript
+- Postgres
+- Dayjs
+- Joi
+- Nodemon
+
+***
+
+## :rocket: Routes
+
+```yml
+POST /categories
+    - Route to register a new category
+    - headers: {}
+    - body: {
+        "name": "Lorem Ipsum"
+}
+```
+    
+```yml 
+GET /categories
+    - Route to list all categories
+```
+
+```yml
+POST /games
+    - Route to add a new game
+    - headers: {}
+    - body: {
+        "name": "Lorem",
+        "image": "https://remarkable-hackwork.info", 
+        "stockTotal": 10, 
+        "pricePerDay": 1000, 
+        "categoryId": 1 
+    }
+```
+    
+```yml 
+GET /games
+    - Route to list games
+```
+
+```yml
+POST /customers
+    - Route to add a new customer
+    - headers: {}
+    - body: {
+         "name": "Lorem Ipsum",
+         "phone": "1499998888",
+         "cpf": "12312312312345",
+         "birthday": "10/10/2000"
+    }
+``` 
+
+```yml 
+GET /customers
+    - Route to list all customers
+```
+
+```yml 
+GET /customers/:id
+    - Route to list customers by id
+```
+
+```yml 
+PUT /customers/:id
+    - Route to edit informations from customer
+    - headers: {}
+    - body: {
+         "name": "Lorem Ipsum",
+         "phone": "1499998888",
+         "cpf": "12312312312345",
+         "birthday": "10/10/2000"
+    }
+```
+
+```yml
+POST /rentals
+    - Route to add a new rental
+    - headers: {}
+    - body: {
+        "customerId": 1,
+        "gameId": 1,
+        "daysRented": 3,
+    }
+``` 
+
+```yml
+POST /rentals/:id/return
+    - Route to close a rental
+    - headers: {}
+    - body: {
+        "customerId": 1,
+        "gameId": 1,
+        "daysRented": 3,
+    }
+``` 
+
+```yml 
+GET /rentals
+    - Route to list rentals from costumer
+```
+
+```yml 
+DELETE /rentals/:id
+    - Route to delete a rental
+```
+
+```yml 
+GET /rentals/metrics
+    - Route to return metrics of rentals by date
+```
+
+
+
+## 🏁 Running the application
+
+This project was started with the [Express](https://www.npmjs.com/package/express), so make sure you have the latest stable version of [Node.js](https://nodejs.org/en/download/) and [npm](https://www.npmjs.com/) running locally.
+
+
+First, clone this repository on your machine:
+
+```
+git clone https://github.com/williameiji/boardcamp
+```
+
+Then, inside the folder, run the following command to install the dependencies.
+
+```
+npm install
+```
+
+Finished the process, just start the server
+```
+npm start
+```
+
 
